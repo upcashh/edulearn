@@ -227,19 +227,30 @@
     const levels = ["P.7 PLE", "S.4 UCE", "S.6 UACE"];
     const papers = [];
 
-    // Create 20 sample files
-    for(let i=1; i<=20; i++) {
-        const sub = subjects[i % subjects.length];
-        const lvl = levels[i % levels.length];
-        papers.push({
-            id: i,
-            name: `${lvl} ${sub} Paper ${2020 + (i%6)}`,
-            subject: sub,
-            level: lvl,
-            downloads: (Math.random() * 2000 + 50).toFixed(0),
-            size: (Math.random() * 2.5 + 0.4).toFixed(1) + "MB"
-        });
+const papers = [
+    {
+        id: 1,
+        name: "UACE BIO I",
+        subject: "Biology",
+        level: "S6 UACE",
+        downloads: "1,240",
+        size: "0.5MB",
+        file: "pdfs/UACE BIO I.pdf",      // Match your uploaded filename
+        preview: "previews/math.jpg"      // Match your image filename
+    },
+    {
+        id: 2,
+        name: "S.4 Physics Paper 1 Mock",
+        subject: "Physics",
+        level: "S.4 UCE",
+        downloads: "850",
+        size: "2.1MB",
+        file: "pdfs/physics-paper1.pdf",
+        preview: "previews/physics.jpg"
     }
+    // Keep adding your 20 files here...
+];
+
 
     const grid = document.getElementById('doc-grid');
     const loader = document.getElementById('search-loader');
