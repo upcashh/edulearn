@@ -7,115 +7,57 @@
     <title>eduLEARN.ug | Uganda's Digital Library</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.js" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #F8FAF9;
-            --card-bg: #ffffff;
-            --text-main: #1A1C1E;
-            --text-sub: #6C757D;
-            --accent: #27ae60;
-            --input-bg: #ffffff;
-            --border-color: #E9ECEF;
+            --bg-color: #F8FAF9; --card-bg: #ffffff; --text-main: #1A1C1E;
+            --text-sub: #6C757D; --accent: #27ae60; --border-color: #E9ECEF;
             --shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
-
         [data-theme="dark"] {
-            --bg-color: #0F172A;
-            --card-bg: #1E293B;
-            --text-main: #F8FAFC;
-            --text-sub: #94A3B8;
-            --accent: #4ADE80;
-            --input-bg: #1E293B;
-            --border-color: #334155;
-            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --bg-color: #0F172A; --card-bg: #1E293B; --text-main: #F8FAFC;
+            --text-sub: #94A3B8; --accent: #4ADE80; --border-color: #334155;
         }
-
-        * { box-sizing: border-box; transition: background 0.3s, color 0.3s; }
-        
-        body { 
-            font-family: 'Outfit', sans-serif; 
-            background-color: var(--bg-color); 
-            margin: 0; padding: 0; color: var(--text-main);
-            overflow-x: hidden;
+        * { box-sizing: border-box; transition: 0.3s; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); }
+        header { padding: 40px 15px 20px; text-align: center; }
+        .logo-text { font-size: 28px; font-weight: 600; letter-spacing: -1px; }
+        .sub-tagline { font-size: 14px; color: var(--accent); margin-bottom: 30px; }
+        .search-container { max-width: 500px; margin: 0 auto 40px; width: 92%; position: relative; }
+        .search-container input {
+            width: 100%; padding: 16px 24px; border-radius: 20px; border: 2px solid var(--border-color);
+            background: var(--card-bg); color: var(--text-main); font-size: 16px; outline: none; box-shadow: var(--shadow);
         }
-
-        header { padding: 20px 15px; text-align: center; }
-        .logo-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 5px; }
-        .book-icon { width: 40px; height: 40px; fill: var(--accent); animation: bookBounce 2s infinite; }
-        @keyframes bookBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        .logo-text { font-size: 26px; font-weight: 600; }
-        .sub-tagline { font-size: 13px; color: var(--accent); margin-bottom: 20px; }
-
-        .search-container { max-width: 500px; margin: 0 auto 30px; width: 92%; position: relative; }
-        .search-box input {
-            width: 100%; padding: 14px 20px; border-radius: 15px; border: 2px solid var(--border-color);
-            background: var(--input-bg); color: var(--text-main); font-size: 15px; outline: none;
-        }
-
         #search-loader {
-            display: none; position: absolute; right: 15px; top: 14px;
-            width: 20px; height: 20px; border: 3px solid var(--border-color);
-            border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;
+            display: none; position: absolute; right: 20px; top: 18px;
+            width: 20px; height: 20px; border: 3px solid #eee; border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .theme-toggle {
-            position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px;
-            border-radius: 12px; background: var(--accent); border: none; cursor: pointer;
-            z-index: 1000; display: flex; align-items: center; justify-content: center;
-        }
-
-        .content { max-width: 1000px; margin: 0 auto; padding: 0 12px 100px; }
-        #doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-        /* Updated: Card is now a clickable Link */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 15px 100px; }
+        #doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
         .paper-card {
-            background: var(--card-bg); border-radius: 20px; padding: 10px;
-            box-shadow: var(--shadow); text-decoration: none; color: inherit;
-            border: 1px solid var(--border-color); display: flex; flex-direction: column;
-            cursor: pointer;
+            background: var(--card-bg); border-radius: 20px; padding: 12px;
+            text-decoration: none; color: inherit; border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; box-shadow: var(--shadow);
         }
-        .paper-card:hover { transform: translateY(-3px); border-color: var(--accent); }
-
-        .preview-box {
-            width: 100%; aspect-ratio: 3/4; background: #e2e8f0; border-radius: 15px;
-            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
-        }
-        .download-badge {
-            position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7);
-            color: white; padding: 3px 8px; border-radius: 10px; font-size: 10px;
-        }
-
-        .title { font-size: 13px; font-weight: 600; margin: 8px 0; height: 34px; overflow: hidden; }
-        .meta-line { font-size: 10px; color: var(--text-sub); display: flex; justify-content: space-between; }
-
-        .download-btn {
-            margin-top: 10px; background: var(--accent); color: white; border-radius: 10px;
-            padding: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;
-            font-size: 12px; font-weight: 600;
-        }
-        .download-btn svg { animation: shake 2.5s infinite; }
-        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } }
-
-        @media (max-width: 480px) { .logo-text { font-size: 22px; } }
+        .paper-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .preview-box { width: 100%; aspect-ratio: 3/4; background: #f0f0f0; border-radius: 15px; overflow: hidden; margin-bottom: 12px; }
+        .title { font-size: 14px; font-weight: 600; line-height: 1.3; height: 36px; overflow: hidden; margin-bottom: 5px; }
+        .meta { font-size: 11px; color: var(--text-sub); }
+        .theme-toggle { position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px; border-radius: 15px; background: var(--accent); border: none; cursor: pointer; z-index: 1000; color: white; display: flex; align-items: center; justify-content: center; }
+        @media (max-width: 480px) { #doc-grid { grid-template-columns: 1fr 1fr; gap: 12px; } }
     </style>
 </head>
 <body>
 
-<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
-    <svg id="theme-icon" width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M12 7a5 5 0 110 10 5 5 0 010-10zM2 13h2a1 1 0 100-2H2a1 1 0 100 2zm18 0h2a1 1 0 100-2h-2a1 1 0 100 2zM11 2v2a1 1 0 102 0V2a1 1 0 10-2 0zm0 18v2a1 1 0 102 0v-2a1 1 0 10-2 0z"/></svg>
-</button>
+<button class="theme-toggle" onclick="toggleTheme()">🌓</button>
 
 <header>
-    <div class="logo-row">
-        <svg class="book-icon" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
-        <div class="logo-text">eduLEARN.ug</div>
-    </div>
-    <div class="sub-tagline">Online library of all Ugandan study materials</div>
+    <div class="logo-text">eduLEARN.ug</div>
+    <div class="sub-tagline">Uganda's Premier Digital Library</div>
     <div class="search-container">
-        <input type="text" id="paperSearch" placeholder="Search Biology, Chemistry, P.7...">
+        <input type="text" id="paperSearch" placeholder="Search Biology, P.7, Mathematics...">
         <div id="search-loader"></div>
     </div>
 </header>
@@ -126,46 +68,22 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
+    // DATA SOURCE
     const papers = [
-        {
-            id: 1,
-            name: "UACE Biology Paper 1",
-            subject: "Biology",
-            level: "S.6 UACE",
-            downloads: "1,240",
-            size: "0.5MB",
-            file: "pdfs/UACE_BIO_I.pdf", 
-            preview: "previews/bio.jpg"
-        },
-        {
-            id: 2,
-            name: "S.4 Mathematics Paper 1",
-            subject: "Mathematics",
-            level: "S.4 UCE",
-            downloads: "850",
-            size: "1.1MB",
-            file: "pdfs/math_s4.pdf",
-            preview: "previews/math.jpg"
-        }
+        { id: 1, name: "UACE Biology Paper 1", subject: "Biology", level: "S.6 UACE", downloads: "1,240", size: "0.5MB", file: "pdfs/UACE_BIO_I.pdf" },
+        { id: 2, name: "S.4 Mathematics P1", subject: "Mathematics", level: "S.4 UCE", downloads: "850", size: "1.1MB", file: "pdfs/math_s4.pdf" },
+        { id: 3, name: "S.4 Chemistry Paper 2", subject: "Chemistry", level: "S.4 UCE", downloads: "620", size: "0.9MB", file: "pdfs/chem_s4.pdf" }
     ];
 
     function render(data = papers) {
         const grid = document.getElementById('doc-grid');
         grid.innerHTML = data.map(p => `
-            <a href="${p.file}" target="_blank" class="paper-card" data-aos="fade-up">
+            <a href="preview.html?id=${p.id}" class="paper-card" data-aos="fade-up">
                 <div class="preview-box">
-                    <img src="${p.preview}" onerror="this.src='https://via.placeholder.com/300x400/27ae60/ffffff?text=${p.subject}'" style="width:100%">
-                    <div class="download-badge">${p.downloads} Downloads</div>
+                    <img src="https://via.placeholder.com/300x400/27ae60/ffffff?text=${p.subject}" style="width:100%">
                 </div>
                 <div class="title">${p.name}</div>
-                <div class="meta-line">
-                    <span>${p.level} • ${p.subject}</span>
-                    <span>${p.size}</span>
-                </div>
-                <div class="download-btn">
-                    <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                    View / Download
-                </div>
+                <div class="meta">${p.level} • ${p.size}</div>
             </a>
         `).join('');
     }
@@ -179,7 +97,7 @@
             const filtered = papers.filter(p => p.name.toLowerCase().includes(term) || p.subject.toLowerCase().includes(term));
             render(filtered);
             document.getElementById('search-loader').style.display = "none";
-        }, 2000);
+        }, 800);
     };
 
     function toggleTheme() {
@@ -188,10 +106,7 @@
         body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
     }
 
-    window.onload = () => {
-        render();
-        AOS.init({ duration: 800, once: true });
-    };
+    window.onload = () => { render(); AOS.init(); };
 </script>
 </body>
 </html>
