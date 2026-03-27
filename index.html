@@ -3,213 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#ffffff"> <title>eduLEARN | Uganda's Digital Library</title>
+    <meta name="theme-color" id="nav-theme" content="#F8FAF9">
+    <title>eduLEARN | Uganda's Digital Library</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #F0F4F3;
-            --header-bg: #ffffff;
-            --accent: #27ae60; /* Professional Green */
-            --text-main: #2c3e50;
-            --text-sub: #7f8c8d;
-            --card-shadow: 0 10px 20px rgba(0,0,0,0.04);
-            
-            /* Label Colors */
-            --primary-lbl: #3498db;
-            --secondary-lbl: #9b59b6;
-            --science-lbl: #e67e22;
+            --bg-color: #F8FAF9;
+            --card-bg: #ffffff;
+            --text-main: #1A1C1E;
+            --text-sub: #6C757D;
+            --accent: #27ae60;
+            --input-bg: #ffffff;
+            --border-color: #E9ECEF;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        [data-theme="dark"] {
+            --bg-color: #0F172A;
+            --card-bg: #1E293B;
+            --text-main: #F8FAFC;
+            --text-sub: #94A3B8;
+            --accent: #4ADE80;
+            --input-bg: #1E293B;
+            --border-color: #334155;
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        * { box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+        
         body { 
             font-family: 'Outfit', sans-serif; 
             background-color: var(--bg-color); 
             margin: 0; padding: 0; color: var(--text-main);
+            overflow-x: hidden;
         }
 
-        /* Header Section */
+        /* Scrollable Header */
         header {
-            background: var(--header-bg);
-            padding: 20px;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky; top: 0; z-index: 100;
-        }
-        .logo { font-weight: 600; font-size: 24px; color: var(--accent); letter-spacing: -1px; }
-
-        /* Search Bar */
-        .search-box {
-            margin: 20px auto;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-        }
-        .search-box input {
-            width: 100%; padding: 14px 45px;
-            border-radius: 15px; border: 1px solid #e0e0e0;
-            font-size: 16px; outline: none; font-family: 'Outfit';
-        }
-        .search-box svg {
-            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
-            width: 20px; height: 20px; fill: var(--text-sub);
+            background: transparent;
         }
 
-        /* Container */
-        .content { max-width: 900px; margin: 0 auto; padding: 0 15px 50px; }
-
-        /* Grid */
-        #doc-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        /* Card Styles */
-        .paper-card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 10px;
-            box-shadow: var(--card-shadow);
+        .logo-container {
             display: flex;
             flex-direction: column;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            color: inherit;
-        }
-        .paper-card:hover { transform: translateY(-5px); }
-
-        .preview-box {
-            width: 100%;
-            aspect-ratio: 3/4; /* Standing Portrait */
-            background: #f9f9f9;
-            border-radius: 12px;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            border: 1px solid #eee;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        .title {
-            font-size: 13px; font-weight: 600; line-height: 1.3;
-            height: 34px; overflow: hidden; display: -webkit-box;
-            -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-            margin-bottom: 5px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .sub-details { font-size: 10px; color: var(--text-sub); display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
-        .tag { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-weight: 600; color: #555; }
-
-        .card-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: auto; padding-top: 8px; border-top: 1px solid #f5f5f5;
+        /* Animated SVG Logo */
+        .edu-icon {
+            width: 80px; height: 80px;
+            fill: var(--accent);
+            animation: float 3s ease-in-out infinite;
         }
-        .file-size { font-size: 11px; color: var(--text-sub); }
-        .download-trigger {
-            background: var(--accent); color: white;
-            width: 32px; height: 32px; border-radius: 50%;
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-text { font-size: 32px; font-weight: 600; letter-spacing: -1px; }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* Skeleton Loading Styles */
-        .skeleton {
-            background: #eee;
-            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-            background-size: 200% 100%;
-            animation: 1.5s shine linear infinite;
+        /* Search Box */
+        .search-box {
+            max-width: 600px; margin: 0 auto 40px; width: 90%;
+            position: relative;
         }
-        @keyframes shine { to { background-position-x: -200%; } }
+        .search-box input {
+            width: 100%; padding: 18px 25px;
+            border-radius: 20px; border: 2px solid var(--border-color);
+            background: var(--input-bg); color: var(--text-main);
+            font-size: 16px; outline: none; font-family: 'Outfit';
+            box-shadow: var(--shadow);
+        }
+
+        /* Grid - 2 files on same line */
+        .content { max-width: 1000px; margin: 0 auto; padding: 0 15px 100px; }
+        #doc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Paper Card */
+        .paper-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 12px;
+            box-shadow: var(--shadow);
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid var(--border-color);
+        }
+
+        .preview-box {
+            width: 100%; aspect-ratio: 3/4;
+            background: #e2e8f0; border-radius: 18px;
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        /* Download Badge on Preview */
+        .download-badge {
+            position: absolute; bottom: 10px; right: 10px;
+            background: rgba(0,0,0,0.6); color: white;
+            padding: 4px 10px; border-radius: 12px;
+            font-size: 11px; display: flex; align-items: center; gap: 5px;
+            backdrop-filter: blur(4px);
+        }
+
+        .title {
+            font-size: 14px; font-weight: 600; line-height: 1.3;
+            margin-bottom: 8px; height: 36px; overflow: hidden;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+        }
+
+        .meta-text { font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between; }
+        
+        .download-btn {
+            margin-top: 12px; width: 100%; padding: 10px;
+            background: var(--accent); color: white;
+            border-radius: 12px; text-align: center;
+            font-size: 13px; font-weight: 600;
+        }
 
         @media (max-width: 480px) {
-            #doc-grid { gap: 10px; }
-            .paper-card { padding: 8px; }
+            #doc-grid { gap: 12px; }
+            .logo-text { font-size: 24px; }
+            .edu-icon { width: 60px; height: 60px; }
         }
     </style>
 </head>
 <body>
 
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+    <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5b3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7 3.134-7 7-7z"/></svg>
+</button>
+
 <header>
-    <div class="logo">eduLEARN</div>
+    <div class="logo-container">
+        <svg class="edu-icon" viewBox="0 0 24 24">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM3.89 9L12 13.47 20.11 9 12 4.53 3.89 9zM12 16c-2.21 0-4 1.79-4 4h8c0-2.21-1.79-4-4-4z"/>
+        </svg>
+        <div class="logo-text">eduLEARN</div>
+    </div>
     <div class="search-box">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input type="text" id="mainSearch" placeholder="Search Biology, Chemistry, PLE...">
+        <input type="text" id="paperSearch" placeholder="Search for papers, subjects...">
     </div>
 </header>
 
 <div class="content">
     <div id="doc-grid">
-        <div class="paper-card skeleton-item"><div class="preview-box skeleton"></div><div style="height:15px; width:80%; margin-bottom:10px" class="skeleton"></div><div style="height:10px; width:40%" class="skeleton"></div></div>
-        <div class="paper-card skeleton-item"><div class="preview-box skeleton"></div><div style="height:15px; width:80%; margin-bottom:10px" class="skeleton"></div><div style="height:10px; width:40%" class="skeleton"></div></div>
-        <div class="paper-card skeleton-item"><div class="preview-box skeleton"></div><div style="height:15px; width:80%; margin-bottom:10px" class="skeleton"></div><div style="height:10px; width:40%" class="skeleton"></div></div>
-        <div class="paper-card skeleton-item"><div class="preview-box skeleton"></div><div style="height:15px; width:80%; margin-bottom:10px" class="skeleton"></div><div style="height:10px; width:40%" class="skeleton"></div></div>
-    </div>
+        </div>
 </div>
 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    // 1. DATA CONFIGURATION (Add your 10+ PDFs here)
-    const papers = [
-        { name: "S.4 Chemistry Paper 1 Mock 2024", level: "O-Level", subject: "Chemistry", size: "1.2MB", file: "pdfs/chem_s4.pdf", preview: "previews/chem_s4.jpg" },
-        { name: "P.7 PLE Mathematics 2025 Pre-Board", level: "Primary", subject: "Maths", size: "850KB", file: "pdfs/math_p7.pdf", preview: "previews/math_p7.jpg" },
-        { name: "A-Level Biology P3 Practical Guide", level: "A-Level", subject: "Biology", size: "2.4MB", file: "pdfs/bio_p3.pdf", preview: "previews/bio_p3.jpg" },
-        { name: "Top Care Nursery Shading & Numbers", level: "Nursery", subject: "Science", size: "4.1MB", file: "pdfs/nursery_sci.pdf", preview: "previews/nursery_sci.jpg" },
-        { name: "S.2 Physics Revision Notes Term 2", level: "O-Level", subject: "Physics", size: "1.5MB", file: "pdfs/phy_s2.pdf", preview: "previews/phy_s2.jpg" },
-        { name: "A-Level History Paper 1 African Hist", level: "A-Level", subject: "History", size: "900KB", file: "pdfs/hist_alevel.pdf", preview: "previews/hist_alevel.jpg" },
-        { name: "P.6 English Grammar Assessment P1", level: "Primary", subject: "English", size: "1.1MB", file: "pdfs/eng_p6.pdf", preview: "previews/eng_p6.jpg" },
-        { name: "S.3 Geography Paper 2 Mapping", level: "O-Level", subject: "Geography", size: "3.2MB", file: "pdfs/geo_s3.pdf", preview: "previews/geo_s3.jpg" },
-        { name: "A-Level Pure Maths P1 Smack 2024", level: "A-Level", subject: "Maths", size: "1.8MB", file: "pdfs/math_alevel.pdf", preview: "previews/math_alevel.jpg" },
-        { name: "Primary Science - Living Things P5", level: "Primary", subject: "Science", size: "1.4MB", file: "pdfs/sci_p5.pdf", preview: "previews/sci_p5.jpg" }
-    ];
+    // 1. Data for 20 Files
+    const subjects = ["Mathematics", "Biology", "Chemistry", "Physics", "English", "Geography", "History", "Commerce", "Agriculture", "Fine Art"];
+    const levels = ["P.7 PLE", "S.4 UCE", "S.6 UACE"];
+    const papers = [];
 
-    const grid = document.getElementById('doc-grid');
-    const search = document.getElementById('mainSearch');
-
-    // 2. GENERATE THE CARDS
-    function renderPapers(filter = "") {
-        grid.innerHTML = ""; // Clear grid
-        const filtered = papers.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.subject.toLowerCase().includes(filter.toLowerCase()));
-
-        filtered.forEach(p => {
-            const card = document.createElement('a');
-            card.className = 'paper-card';
-            card.href = p.file;
-            card.target = "_blank"; // Opens PDF in new tab
-            
-            card.innerHTML = `
-                <div class="preview-box">
-                    <img src="${p.preview}" alt="Preview" onerror="this.src='https://via.placeholder.com/150x200?text=PDF+Page+1'">
-                </div>
-                <div class="title">${p.name}</div>
-                <div class="sub-details">
-                    <span class="tag">${p.level}</span>
-                    <span class="tag">${p.subject}</span>
-                </div>
-                <div class="card-footer">
-                    <span class="file-size">${p.size}</span>
-                    <div class="download-trigger">
-                        <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                    </div>
-                </div>
-            `;
-            grid.appendChild(card);
+    for(let i=1; i<=20; i++) {
+        const sub = subjects[Math.floor(Math.random() * subjects.length)];
+        const lvl = levels[Math.floor(Math.random() * levels.length)];
+        papers.push({
+            id: i,
+            name: `${lvl} ${sub} Mock Paper ${2020 + (i%5)}`,
+            subject: sub,
+            level: lvl,
+            downloads: Math.floor(Math.random() * 5000) + 100,
+            size: (Math.random() * 3 + 0.5).toFixed(1) + "MB"
         });
     }
 
-    // 3. SIMULATE LOADING (Skeleton effect)
-    window.onload = () => {
-        setTimeout(() => {
-            renderPapers();
-        }, 1500); // Wait 1.5s then show real data
+    const grid = document.getElementById('doc-grid');
+
+    function render() {
+        grid.innerHTML = papers.map(p => `
+            <div class="paper-card" data-aos="fade-up">
+                <div class="preview-box">
+                    <img src="https://via.placeholder.com/300x400/27ae60/ffffff?text=${p.subject}" style="width:100%">
+                    <div class="download-badge">
+                        <svg width="10" height="10" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        ${p.downloads}
+                    </div>
+                </div>
+                <div class="title">${p.name}</div>
+                <div class="meta-text">
+                    <span>${p.level} • ${p.subject}</span>
+                    <span>${p.size}</span>
+                </div>
+                <a href="pdfs/sample.pdf" download class="download-btn">Download PDF</a>
+            </div>
+        `).join('');
+    }
+
+    // 2. Theme Toggle
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        const newTheme = current === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', newTheme);
+        document.getElementById('nav-theme').setAttribute('content', newTheme === 'dark' ? '#0F172A' : '#F8FAF9');
+        localStorage.setItem('theme', newTheme);
+    }
+
+    // 3. Search Logic
+    document.getElementById('paperSearch').oninput = (e) => {
+        const term = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.paper-card');
+        cards.forEach(card => {
+            const text = card.innerText.toLowerCase();
+            card.style.display = text.includes(term) ? 'block' : 'none';
+        });
     };
 
-    // 4. SEARCH FUNCTIONALITY
-    search.oninput = (e) => renderPapers(e.target.value);
+    // Initialize
+    window.onload = () => {
+        render();
+        AOS.init({ duration: 800, once: true });
+        
+        // Load saved theme
+        if(localStorage.getItem('theme') === 'dark') toggleTheme();
+    };
 </script>
 
 </body>
 </html>
-
