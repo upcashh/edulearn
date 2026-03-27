@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" id="nav-theme" content="#F8FAFC">
+    <meta name="theme-color" id="nav-theme" content="#0F172A">
     <title>eduLEARN.ug | Uganda's Digital Library</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -11,237 +11,172 @@
     
     <style>
         :root {
-            /* Modern Tech Palette */
-            --bg-color: #F8FAFC; 
-            --card-bg: #ffffff; 
-            --text-main: #0F172A; 
-            --text-sub: #64748B;  
-            --accent: #4F46E5;    /* Vibrant Indigo */
-            --success: #10B981;   /* Mint Green */
-            --border-color: #E2E8F0;
-            --shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.05);
-            --header-blur: rgba(248, 250, 252, 0.9);
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #020617; 
-            --card-bg: #0F172A; 
+            /* Slate & Gold Palette */
+            --bg-color: #0F172A; 
+            --card-bg: #1E293B; 
             --text-main: #F8FAFC; 
             --text-sub: #94A3B8; 
-            --accent: #818CF8; 
-            --success: #34D399; 
-            --border-color: #1E293B;
-            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
-            --header-blur: rgba(2, 6, 23, 0.9);
+            --accent: #F59E0B;    /* Golden Amber */
+            --accent-soft: rgba(245, 158, 11, 0.1);
+            --border-color: rgba(255, 255, 255, 0.05);
+            --glass: rgba(30, 41, 59, 0.7);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        [data-theme="light"] {
+            --bg-color: #F1F5F9; 
+            --card-bg: #ffffff; 
+            --text-main: #0F172A; 
+            --text-sub: #64748B; 
+            --accent: #D97706; 
+            --accent-soft: rgba(217, 119, 6, 0.1);
+            --border-color: #E2E8F0;
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
         
         body { 
             font-family: 'Outfit', sans-serif; 
             background-color: var(--bg-color); 
             margin: 0; padding: 0; color: var(--text-main);
             overflow-x: hidden;
-            line-height: 1.5;
         }
 
-        /* Modern Sticky Header */
+        /* Glassmorphism Sticky Header */
         header { 
-            padding: 20px 15px; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100;
-            background: var(--header-blur);
-            backdrop-filter: blur(16px);
+            padding: 25px 20px; 
+            position: sticky; top: 0; z-index: 1000;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        .logo-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
+        .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 
-        /* SVG Animated Icon */
-        .logo-icon {
-            width: 35px;
-            height: 35px;
+        /* Animated SVG Brand Icon */
+        .brand-svg { width: 40px; height: 40px; }
+        .pulse-circle {
             fill: var(--accent);
-            animation: bounce 2s infinite ease-in-out;
+            animation: pulse 2s infinite;
+            transform-origin: center;
         }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
         }
 
         .logo-text { 
-            font-size: 28px; 
-            font-weight: 600; 
-            letter-spacing: -1px; 
-            color: var(--text-main);
+            font-size: 30px; font-weight: 600; letter-spacing: -1px; 
+            background: linear-gradient(to right, var(--text-main), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .search-container { 
-            max-width: 500px; 
-            margin: 0 auto; 
-            width: 100%; 
-            position: relative; 
+        /* Premium Search bar */
+        .search-wrapper { 
+            width: 100%; max-width: 550px; position: relative;
         }
-
-        .search-container input {
-            width: 100%; 
-            padding: 14px 20px 14px 50px; 
-            border-radius: 14px; 
-            border: 2px solid var(--border-color);
-            background: var(--card-bg); 
-            color: var(--text-main); 
-            font-size: 15px; 
-            outline: none; 
-            box-shadow: var(--shadow);
+        .search-wrapper input {
+            width: 100%; padding: 16px 25px 16px 55px; 
+            border-radius: 100px; border: 1px solid var(--border-color);
+            background: var(--card-bg); color: var(--text-main); 
+            font-size: 16px; outline: none; box-shadow: var(--shadow);
         }
-
-        .search-container input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-
-        /* Search SVG Icon */
+        .search-wrapper input:focus { border-color: var(--accent); }
+        
         .search-icon {
-            position: absolute;
-            left: 18px;
-            top: 15px;
-            width: 20px;
-            height: 20px;
-            stroke: var(--text-sub);
-            animation: searchShake 5s infinite;
+            position: absolute; left: 22px; top: 16px; width: 20px;
+            stroke: var(--accent);
         }
-
-        @keyframes searchShake {
-            0%, 90%, 100% { transform: rotate(0); }
-            92% { transform: rotate(-10deg); }
-            95% { transform: rotate(10deg); }
-        }
-
-        #search-loader {
-            display: none; position: absolute; right: 18px; top: 15px;
-            width: 20px; height: 20px; border: 2px solid #eee; 
-            border-top: 2px solid var(--accent); border-radius: 50%; 
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* Content Grid */
-        .content { max-width: 1100px; margin: 30px auto; padding: 0 20px 100px; }
+        .main-content { max-width: 1200px; margin: 40px auto; padding: 0 20px 100px; }
         #doc-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 20px; 
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 30px; 
         }
 
-        .paper-card {
-            background: var(--card-bg); 
-            border-radius: 20px; 
-            padding: 10px;
-            text-decoration: none; 
-            color: inherit; 
+        /* Document Card */
+        .doc-card {
+            background: var(--card-bg); border-radius: 28px; padding: 18px;
+            text-decoration: none; color: inherit; 
             border: 1px solid var(--border-color);
-            display: flex; 
-            flex-direction: column; 
+            display: flex; flex-direction: column; 
             box-shadow: var(--shadow);
-            overflow: hidden;
+            position: relative; overflow: hidden;
+        }
+        .doc-card:hover { 
+            transform: translateY(-12px); 
+            border-color: rgba(245, 158, 11, 0.4);
         }
 
-        .paper-card:hover { 
-            transform: scale(1.03); 
-            border-color: var(--accent);
-            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+        .img-holder { 
+            width: 100%; aspect-ratio: 4/5; 
+            background: var(--bg-color); border-radius: 20px; 
+            overflow: hidden; margin-bottom: 18px; 
+        }
+        .img-holder img { width: 100%; height: 100%; object-fit: cover; }
+
+        .doc-title { 
+            font-size: 17px; font-weight: 600; line-height: 1.3; 
+            height: 44px; overflow: hidden; margin-bottom: 12px;
         }
 
-        .preview-box { 
-            width: 100%; 
-            aspect-ratio: 1/1; 
-            background: #F1F5F9; 
-            border-radius: 14px; 
-            overflow: hidden; 
-            margin-bottom: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
+        .doc-meta { 
+            display: flex; justify-content: space-between; align-items: center;
         }
-
-        .title { 
-            font-size: 15px; 
-            font-weight: 600; 
-            line-height: 1.2; 
-            height: 36px; 
-            overflow: hidden; 
-            margin-bottom: 10px;
-            padding: 0 5px;
+        .level-tag {
+            background: var(--accent-soft); color: var(--accent);
+            padding: 4px 12px; border-radius: 10px; font-size: 12px; font-weight: 600;
         }
+        .size-info { font-size: 11px; color: var(--text-sub); }
 
-        .meta-line { 
-            padding: 0 5px 5px;
-            font-size: 11px; 
-            color: var(--text-sub); 
-            display: flex; 
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .badge {
-            background: rgba(79, 70, 229, 0.1);
-            color: var(--accent);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        /* Floating Theme Toggle */
-        .theme-toggle { 
-            position: fixed; bottom: 25px; right: 25px; 
-            width: 50px; height: 50px; border-radius: 50%; 
+        /* Floating Theme Switcher */
+        .mode-toggle { 
+            position: fixed; bottom: 35px; right: 35px; 
+            width: 60px; height: 60px; border-radius: 20px; 
             background: var(--accent); border: none; cursor: pointer; 
-            z-index: 1000; color: white; display: flex; 
+            z-index: 2000; color: white; display: flex; 
             align-items: center; justify-content: center;
-            box-shadow: 0 10px 15px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4);
         }
 
         @media (max-width: 480px) { 
-            #doc-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-            .logo-text { font-size: 22px; }
+            #doc-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .logo-text { font-size: 24px; }
+            .main-content { padding: 0 15px 100px; }
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
-<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
-    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<button class="mode-toggle" onclick="toggleMode()">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
 </button>
 
 <header>
-    <div class="logo-row">
-        <svg class="logo-icon" viewBox="0 0 24 24">
-            <path d="M12 21l-8-4.5v-9l8 4.5 8-4.5v9l-8 4.5zM12 12l8-4.5-8-4.5-8 4.5 8 4.5z"/>
+    <div class="brand">
+        <svg class="brand-svg" viewBox="0 0 24 24">
+            <circle class="pulse-circle" cx="12" cy="12" r="10" />
+            <path d="M8 12h8m-4-4v8" stroke="white" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        <div class="logo-text">eduLEARN<span style="color:var(--accent)">.ug</span></div>
+        <div class="logo-text">eduLEARN.ug</div>
     </div>
     
-    <div class="search-container">
-        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+    <div class="search-wrapper">
+        <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
-        <input type="text" id="paperSearch" placeholder="Search Biology, P.7, Mathematics...">
-        <div id="search-loader"></div>
+        <input type="text" id="paperSearch" placeholder="Find study materials...">
     </div>
 </header>
 
-<div class="content">
+<div class="main-content">
     <div id="doc-grid"></div>
 </div>
 
@@ -252,18 +187,18 @@
             id: 1, 
             name: "UACE Biology Paper 1", 
             subject: "Biology", 
-            level: "S.6", 
-            size: "0.5MB", 
+            level: "S.6 UACE", 
+            size: "520 KB", 
             file: "pdfs/UACE_BIO_I.pdf",
             preview: "previews/bio.jpg" 
         },
         { 
             id: 2, 
-            name: "UCE Math Paper 2", 
-            subject: "Math", 
-            level: "S.4", 
-            size: "1.2MB", 
-            file: "pdfs/UCE_MATH_II.pdf",
+            name: "UCE Math Paper 1", 
+            subject: "Mathematics", 
+            level: "S.4 UCE", 
+            size: "1.1 MB", 
+            file: "pdfs/math_s4.pdf",
             preview: "previews/math.jpg" 
         }
     ];
@@ -271,14 +206,14 @@
     function render(data = papers) {
         const grid = document.getElementById('doc-grid');
         grid.innerHTML = data.map(p => `
-            <a href="preview.html?id=${p.id}" class="paper-card" data-aos="zoom-in">
-                <div class="preview-box">
-                    <img src="${p.preview}" onerror="this.src='https://via.placeholder.com/300x300/4F46E5/ffffff?text=${p.subject}'" style="width:100%; height:100%; object-fit: cover;">
+            <a href="preview.html?id=${p.id}" class="doc-card" data-aos="fade-up">
+                <div class="img-holder">
+                    <img src="${p.preview}" onerror="this.src='https://via.placeholder.com/300x400/0F172A/F59E0B?text=${p.subject}'">
                 </div>
-                <div class="title">${p.name}</div>
-                <div class="meta-line">
-                    <span class="badge">${p.level}</span>
-                    <span>${p.size}</span>
+                <div class="doc-title">${p.name}</div>
+                <div class="doc-meta">
+                    <span class="level-tag">${p.level}</span>
+                    <span class="size-info">${p.size}</span>
                 </div>
             </a>
         `).join('');
@@ -286,25 +221,19 @@
 
     document.getElementById('paperSearch').oninput = (e) => {
         const term = e.target.value.toLowerCase();
-        const loader = document.getElementById('search-loader');
-        loader.style.display = "block";
-        
-        setTimeout(() => {
-            const filtered = papers.filter(p => p.name.toLowerCase().includes(term) || p.subject.toLowerCase().includes(term));
-            render(filtered);
-            loader.style.display = "none";
-        }, 400);
+        const filtered = papers.filter(p => p.name.toLowerCase().includes(term) || p.subject.toLowerCase().includes(term));
+        render(filtered);
     };
 
-    function toggleTheme() {
+    function toggleMode() {
         const body = document.body;
-        const isDark = body.getAttribute('data-theme') === 'dark';
-        const nextTheme = isDark ? 'light' : 'dark';
-        body.setAttribute('data-theme', nextTheme);
-        document.getElementById('nav-theme').setAttribute('content', nextTheme === 'dark' ? '#020617' : '#F8FAFC');
+        const current = body.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', next);
+        document.getElementById('nav-theme').setAttribute('content', next === 'dark' ? '#0F172A' : '#F1F5F9');
     }
 
-    window.onload = () => { render(); AOS.init({ duration: 600, once: true }); };
+    window.onload = () => { render(); AOS.init({ duration: 1000, once: true }); };
 </script>
 
 </body>
