@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff"> <title>eduLEARN | Uganda's Digital Library</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #F0F4F3;
+            --header-bg: #ffffff;
+            --accent: #27ae60; /* Professional Green */
+            --text-main: #2c3e50;
+            --text-sub: #7f8c8d;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.04);
+            
+            /* Label Colors */
+            --primary-lbl: #3498db;
+            --secondary-lbl: #9b59b6;
+            --science-lbl: #e67e22;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--bg-color); 
+            margin: 0; padding: 0; color: var(--text-main);
+        }
+
+        /* Header Section */
+        header {
+            background: var(--header-bg);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-weight: 600; font-size: 24px; color: var(--accent); letter-spacing: -1px; }
+
+        /* Search Bar */
+        .search-box {
+            margin: 20px auto;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%; padding: 14px 45px;
+            border-radius: 15px; border: 1px solid #e0e0e0;
+            font-size: 16px; outline: none; font-family: 'Outfit';
+        }
+        .search-box svg {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            width: 20px; height: 20px; fill: var(--text-sub);
+        }
+
+        /* Container */
+        .content { max-width: 900px; margin: 0 auto; padding: 0 15px 50px; }
+
+        /* Grid */
+        #doc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* Card Styles */
+        .paper-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 10px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .paper-card:hover { transform: translateY(-5px); }
+
+        .preview-box {
+            width: 100%;
+            aspect-ratio: 3/4; /* Standing Portrait */
+            background: #f9f9f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #eee;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .title {
+            font-size: 13px; font-weight: 600; line-height: 1.3;
+            height: 34px; overflow: hidden; display: -webkit-box;
+            -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            margin-bottom: 5px;
+        }
+
+        .sub-details { font-size: 10px; color: var(--text-sub); display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+        .tag { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-weight: 600; color: #555; }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: auto; padding-top: 8px; border-top: 1px solid #f5f5f5;
+        }
+        .file-size { font-size: 11px; color: var(--text-sub); }
+        .download-trigger {
+            background: var(--accent); color: white;
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Skeleton Loading Styles */
+        .skeleton {
+            background: #eee;
+            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+            background-size: 200% 100%;
+            animation: 1.5s shine linear infinite;
+        }
+        @keyframes shine { to { background-position-x: -200%; } }
+
+        @media (max-width: 480px) {
+            #doc-grid { gap: 10px; }
+            .paper-card { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">eduLEARN</div>
+    <div class="search-box">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="mainSearch" placeholder="Search Biology, Chemistry, PLE...">
+    </div>
+</header>
+
+<div class="content">
+    <div id="doc-grid">
+        <div class="paper-card skeleton-item"><div class="preview-box skeleton"></div><div style="height:15px; width:80%; margin-bottom:10px" class="skeleton"></div><div style="height:10px; width:40%" class="skeleton"></div></div>
+        <div class="paper-card skeleton-item"><div class="preview-box skeleton"></div><div style="height:15px; width:80%; margin-bottom:10px" class="skeleton"></div><div style="height:10px; width:40%" class="skeleton"></div></div>
+        <div class="paper-card skeleton-item"><div class="preview-box skeleton"></div><div style="height:15px; width:80%; margin-bottom:10px" class="skeleton"></div><div style="height:10px; width:40%" class="skeleton"></div></div>
+        <div class="paper-card skeleton-item"><div class="preview-box skeleton"></div><div style="height:15px; width:80%; margin-bottom:10px" class="skeleton"></div><div style="height:10px; width:40%" class="skeleton"></div></div>
+    </div>
+</div>
+
+<script>
+    // 1. DATA CONFIGURATION (Add your 10+ PDFs here)
+    const papers = [
+        { name: "S.4 Chemistry Paper 1 Mock 2024", level: "O-Level", subject: "Chemistry", size: "1.2MB", file: "pdfs/chem_s4.pdf", preview: "previews/chem_s4.jpg" },
+        { name: "P.7 PLE Mathematics 2025 Pre-Board", level: "Primary", subject: "Maths", size: "850KB", file: "pdfs/math_p7.pdf", preview: "previews/math_p7.jpg" },
+        { name: "A-Level Biology P3 Practical Guide", level: "A-Level", subject: "Biology", size: "2.4MB", file: "pdfs/bio_p3.pdf", preview: "previews/bio_p3.jpg" },
+        { name: "Top Care Nursery Shading & Numbers", level: "Nursery", subject: "Science", size: "4.1MB", file: "pdfs/nursery_sci.pdf", preview: "previews/nursery_sci.jpg" },
+        { name: "S.2 Physics Revision Notes Term 2", level: "O-Level", subject: "Physics", size: "1.5MB", file: "pdfs/phy_s2.pdf", preview: "previews/phy_s2.jpg" },
+        { name: "A-Level History Paper 1 African Hist", level: "A-Level", subject: "History", size: "900KB", file: "pdfs/hist_alevel.pdf", preview: "previews/hist_alevel.jpg" },
+        { name: "P.6 English Grammar Assessment P1", level: "Primary", subject: "English", size: "1.1MB", file: "pdfs/eng_p6.pdf", preview: "previews/eng_p6.jpg" },
+        { name: "S.3 Geography Paper 2 Mapping", level: "O-Level", subject: "Geography", size: "3.2MB", file: "pdfs/geo_s3.pdf", preview: "previews/geo_s3.jpg" },
+        { name: "A-Level Pure Maths P1 Smack 2024", level: "A-Level", subject: "Maths", size: "1.8MB", file: "pdfs/math_alevel.pdf", preview: "previews/math_alevel.jpg" },
+        { name: "Primary Science - Living Things P5", level: "Primary", subject: "Science", size: "1.4MB", file: "pdfs/sci_p5.pdf", preview: "previews/sci_p5.jpg" }
+    ];
+
+    const grid = document.getElementById('doc-grid');
+    const search = document.getElementById('mainSearch');
+
+    // 2. GENERATE THE CARDS
+    function renderPapers(filter = "") {
+        grid.innerHTML = ""; // Clear grid
+        const filtered = papers.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.subject.toLowerCase().includes(filter.toLowerCase()));
+
+        filtered.forEach(p => {
+            const card = document.createElement('a');
+            card.className = 'paper-card';
+            card.href = p.file;
+            card.target = "_blank"; // Opens PDF in new tab
+            
+            card.innerHTML = `
+                <div class="preview-box">
+                    <img src="${p.preview}" alt="Preview" onerror="this.src='https://via.placeholder.com/150x200?text=PDF+Page+1'">
+                </div>
+                <div class="title">${p.name}</div>
+                <div class="sub-details">
+                    <span class="tag">${p.level}</span>
+                    <span class="tag">${p.subject}</span>
+                </div>
+                <div class="card-footer">
+                    <span class="file-size">${p.size}</span>
+                    <div class="download-trigger">
+                        <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // 3. SIMULATE LOADING (Skeleton effect)
+    window.onload = () => {
+        setTimeout(() => {
+            renderPapers();
+        }, 1500); // Wait 1.5s then show real data
+    };
+
+    // 4. SEARCH FUNCTIONALITY
+    search.oninput = (e) => renderPapers(e.target.value);
+</script>
+
+</body>
+</html>
+
