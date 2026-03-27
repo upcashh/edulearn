@@ -68,11 +68,18 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    // DATA SOURCE
+    // THE DATABASE - Only your real files go here
     const papers = [
-        { id: 1, name: "UACE Biology Paper 1", subject: "Biology", level: "S.6 UACE", downloads: "1,240", size: "0.5MB", file: "pdfs/UACE_BIO_I.pdf" },
-        { id: 2, name: "S.4 Mathematics P1", subject: "Mathematics", level: "S.4 UCE", downloads: "850", size: "1.1MB", file: "pdfs/math_s4.pdf" },
-        { id: 3, name: "S.4 Chemistry Paper 2", subject: "Chemistry", level: "S.4 UCE", downloads: "620", size: "0.9MB", file: "pdfs/chem_s4.pdf" }
+        { 
+            id: 1, 
+            name: "UACE Biology Paper 1", 
+            subject: "Biology", 
+            level: "S.6 UACE", 
+            downloads: "1,240", 
+            size: "0.5MB", 
+            file: "pdfs/UACE_BIO_I.pdf",
+            preview: "previews/bio.jpg" 
+        }
     ];
 
     function render(data = papers) {
@@ -80,33 +87,23 @@
         grid.innerHTML = data.map(p => `
             <a href="preview.html?id=${p.id}" class="paper-card" data-aos="fade-up">
                 <div class="preview-box">
-                    <img src="https://via.placeholder.com/300x400/27ae60/ffffff?text=${p.subject}" style="width:100%">
+                    <img src="${p.preview}" onerror="this.src='https://via.placeholder.com/300x400/27ae60/ffffff?text=${p.subject}'" style="width:100%">
                 </div>
                 <div class="title">${p.name}</div>
-                <div class="meta">${p.level} • ${p.size}</div>
+                <div class="meta-line"><span>${p.level}</span></div>
             </a>
         `).join('');
     }
 
-    let searchTimeout;
+    // Standard Search Logic
     document.getElementById('paperSearch').oninput = (e) => {
         const term = e.target.value.toLowerCase();
-        document.getElementById('search-loader').style.display = "block";
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            const filtered = papers.filter(p => p.name.toLowerCase().includes(term) || p.subject.toLowerCase().includes(term));
-            render(filtered);
-            document.getElementById('search-loader').style.display = "none";
-        }, 800);
+        const filtered = papers.filter(p => p.name.toLowerCase().includes(term));
+        render(filtered);
     };
-
-    function toggleTheme() {
-        const body = document.body;
-        const current = body.getAttribute('data-theme');
-        body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-    }
 
     window.onload = () => { render(); AOS.init(); };
 </script>
+
 </body>
 </html>
