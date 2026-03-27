@@ -2,239 +2,148 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" id="nav-theme" content="#0F172A">
-    <title>eduLEARN.ug | Uganda's Digital Library</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>eduLEARN.ug | Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
     <style>
         :root {
-            /* Slate & Gold Palette */
-            --bg-color: #0F172A; 
-            --card-bg: #1E293B; 
-            --text-main: #F8FAFC; 
-            --text-sub: #94A3B8; 
-            --accent: #F59E0B;    /* Golden Amber */
-            --accent-soft: rgba(245, 158, 11, 0.1);
-            --border-color: rgba(255, 255, 255, 0.05);
-            --glass: rgba(30, 41, 59, 0.7);
-            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            --primary: #4F46E5;
+            --bg: #F8FAFC;
+            --card: #ffffff;
+            --text: #0F172A;
+            --sub-text: #64748B;
+            --nav-bg: rgba(255, 255, 255, 0.9);
         }
 
-        [data-theme="light"] {
-            --bg-color: #F1F5F9; 
-            --card-bg: #ffffff; 
-            --text-main: #0F172A; 
-            --text-sub: #64748B; 
-            --accent: #D97706; 
-            --accent-soft: rgba(217, 119, 6, 0.1);
-            --border-color: #E2E8F0;
-            --glass: rgba(255, 255, 255, 0.8);
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-        }
-
-        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
-        
         body { 
             font-family: 'Outfit', sans-serif; 
-            background-color: var(--bg-color); 
-            margin: 0; padding: 0; color: var(--text-main);
-            overflow-x: hidden;
+            background: var(--bg); 
+            margin: 0; color: var(--text);
+            padding-bottom: 80px; /* Space for bottom nav */
         }
 
-        /* Glassmorphism Sticky Header */
-        header { 
-            padding: 25px 20px; 
-            position: sticky; top: 0; z-index: 1000;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
+        /* Top Header */
+        header {
+            padding: 20px;
+            background: var(--card);
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-profile {
+            width: 35px; height: 35px;
+            background: #E2E8F0;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero { padding: 25px 20px; }
+        .hero h1 { font-size: 24px; margin: 0 0 10px; }
+        .hero p { color: var(--sub-text); margin: 0; font-size: 15px; }
+
+        .search-bar {
+            background: var(--card);
+            margin-top: 20px;
+            padding: 12px 20px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #E2E8F0;
+        }
+
+        .search-bar input {
+            border: none; outline: none; width: 100%; font-size: 16px; margin-left: 10px;
+        }
+
+        /* Categories/Horizontal Scroll */
+        .section-title { padding: 0 20px; font-weight: 600; display: flex; justify-content: space-between; }
+        .horizontal-scroll {
+            display: flex; overflow-x: auto; padding: 15px 20px; gap: 15px;
+            scrollbar-width: none;
+        }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+
+        .feature-card {
+            min-width: 200px; background: var(--primary); color: white;
+            padding: 20px; border-radius: 20px; position: relative;
+        }
+
+        /* Bottom Toolbar */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: var(--nav-bg); backdrop-filter: blur(10px);
+            border-top: 1px solid #E2E8F0;
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-item {
             display: flex; flex-direction: column; align-items: center;
+            text-decoration: none; color: var(--sub-text); font-size: 11px;
+            gap: 4px;
         }
-
-        .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-
-        /* Animated SVG Brand Icon */
-        .brand-svg { width: 40px; height: 40px; }
-        .pulse-circle {
-            fill: var(--accent);
-            animation: pulse 2s infinite;
-            transform-origin: center;
-        }
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-
-        .logo-text { 
-            font-size: 30px; font-weight: 600; letter-spacing: -1px; 
-            background: linear-gradient(to right, var(--text-main), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Premium Search bar */
-        .search-wrapper { 
-            width: 100%; max-width: 550px; position: relative;
-        }
-        .search-wrapper input {
-            width: 100%; padding: 16px 25px 16px 55px; 
-            border-radius: 100px; border: 1px solid var(--border-color);
-            background: var(--card-bg); color: var(--text-main); 
-            font-size: 16px; outline: none; box-shadow: var(--shadow);
-        }
-        .search-wrapper input:focus { border-color: var(--accent); }
+        .nav-item.active { color: var(--primary); font-weight: 600; }
         
-        .search-icon {
-            position: absolute; left: 22px; top: 16px; width: 20px;
-            stroke: var(--accent);
-        }
-
-        /* Content Grid */
-        .main-content { max-width: 1200px; margin: 40px auto; padding: 0 20px 100px; }
-        #doc-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 30px; 
-        }
-
-        /* Document Card */
-        .doc-card {
-            background: var(--card-bg); border-radius: 28px; padding: 18px;
-            text-decoration: none; color: inherit; 
-            border: 1px solid var(--border-color);
-            display: flex; flex-direction: column; 
-            box-shadow: var(--shadow);
-            position: relative; overflow: hidden;
-        }
-        .doc-card:hover { 
-            transform: translateY(-12px); 
-            border-color: rgba(245, 158, 11, 0.4);
-        }
-
-        .img-holder { 
-            width: 100%; aspect-ratio: 4/5; 
-            background: var(--bg-color); border-radius: 20px; 
-            overflow: hidden; margin-bottom: 18px; 
-        }
-        .img-holder img { width: 100%; height: 100%; object-fit: cover; }
-
-        .doc-title { 
-            font-size: 17px; font-weight: 600; line-height: 1.3; 
-            height: 44px; overflow: hidden; margin-bottom: 12px;
-        }
-
-        .doc-meta { 
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .level-tag {
-            background: var(--accent-soft); color: var(--accent);
-            padding: 4px 12px; border-radius: 10px; font-size: 12px; font-weight: 600;
-        }
-        .size-info { font-size: 11px; color: var(--text-sub); }
-
-        /* Floating Theme Switcher */
-        .mode-toggle { 
-            position: fixed; bottom: 35px; right: 35px; 
-            width: 60px; height: 60px; border-radius: 20px; 
-            background: var(--accent); border: none; cursor: pointer; 
-            z-index: 2000; color: white; display: flex; 
-            align-items: center; justify-content: center;
-            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4);
-        }
-
-        @media (max-width: 480px) { 
-            #doc-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
-            .logo-text { font-size: 24px; }
-            .main-content { padding: 0 15px 100px; }
-        }
+        .nav-icon { width: 24px; height: 24px; }
     </style>
 </head>
-<body data-theme="dark">
-
-<button class="mode-toggle" onclick="toggleMode()">
-    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-</button>
+<body>
 
 <header>
-    <div class="brand">
-        <svg class="brand-svg" viewBox="0 0 24 24">
-            <circle class="pulse-circle" cx="12" cy="12" r="10" />
-            <path d="M8 12h8m-4-4v8" stroke="white" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <div class="logo-text">eduLEARN.ug</div>
-    </div>
-    
-    <div class="search-wrapper">
-        <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-        <input type="text" id="paperSearch" placeholder="Find study materials...">
+    <div style="font-weight: 700; font-size: 20px;">eduLEARN<span style="color:var(--primary)">.ug</span></div>
+    <div class="user-profile">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
     </div>
 </header>
 
-<div class="main-content">
-    <div id="doc-grid"></div>
+<div class="hero">
+    <h1>Transform the way you study</h1>
+    <p>Unlock exclusive materials and stay ahead.</p>
+    
+    <div class="search-bar">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        <input type="text" placeholder="Search for courses, papers...">
+    </div>
 </div>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    const papers = [
-        { 
-            id: 1, 
-            name: "UACE Biology Paper 1", 
-            subject: "Biology", 
-            level: "S.6 UACE", 
-            size: "520 KB", 
-            file: "pdfs/UACE_BIO_I.pdf",
-            preview: "previews/bio.jpg" 
-        },
-        { 
-            id: 2, 
-            name: "UCE Math Paper 1", 
-            subject: "Mathematics", 
-            level: "S.4 UCE", 
-            size: "1.1 MB", 
-            file: "pdfs/math_s4.pdf",
-            preview: "previews/math.jpg" 
-        }
-    ];
+<div class="section-title">
+    <span>Continue Reading</span>
+    <span style="color:var(--primary); font-size: 14px;">See all</span>
+</div>
 
-    function render(data = papers) {
-        const grid = document.getElementById('doc-grid');
-        grid.innerHTML = data.map(p => `
-            <a href="preview.html?id=${p.id}" class="doc-card" data-aos="fade-up">
-                <div class="img-holder">
-                    <img src="${p.preview}" onerror="this.src='https://via.placeholder.com/300x400/0F172A/F59E0B?text=${p.subject}'">
-                </div>
-                <div class="doc-title">${p.name}</div>
-                <div class="doc-meta">
-                    <span class="level-tag">${p.level}</span>
-                    <span class="size-info">${p.size}</span>
-                </div>
-            </a>
-        `).join('');
-    }
+<div class="horizontal-scroll">
+    <div class="feature-card">
+        <div style="font-size: 13px; opacity: 0.8;">S.6 Biology</div>
+        <div style="font-size: 18px; font-weight: 600; margin-top: 10px;">UACE Mocks 2025</div>
+    </div>
+    <div class="feature-card" style="background: #10B981;">
+        <div style="font-size: 13px; opacity: 0.8;">P.7 PLE</div>
+        <div style="font-size: 18px; font-weight: 600; margin-top: 10px;">Mathematics 2024</div>
+    </div>
+</div>
 
-    document.getElementById('paperSearch').oninput = (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = papers.filter(p => p.name.toLowerCase().includes(term) || p.subject.toLowerCase().includes(term));
-        render(filtered);
-    };
-
-    function toggleMode() {
-        const body = document.body;
-        const current = body.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        body.setAttribute('data-theme', next);
-        document.getElementById('nav-theme').setAttribute('content', next === 'dark' ? '#0F172A' : '#F1F5F9');
-    }
-
-    window.onload = () => { render(); AOS.init({ duration: 1000, once: true }); };
-</script>
+<nav class="bottom-nav">
+    <a href="#" class="nav-item active">
+        <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Home</span>
+    </a>
+    <a href="#" class="nav-item">
+        <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span>My Library</span>
+    </a>
+    <a href="#" class="nav-item">
+        <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        <span>Discovery</span>
+    </a>
+    <a href="#" class="nav-item">
+        <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span>AI Tutor</span>
+    </a>
+</nav>
 
 </body>
 </html>
