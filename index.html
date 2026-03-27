@@ -223,32 +223,31 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    const subjects = ["Mathematics", "Biology", "Chemistry", "Physics", "English", "Geography", "History", "Commerce", "Agriculture", "Literature"];
-    const levels = ["P.7 PLE", "S.4 UCE", "S.6 UACE"];
-    const papers = [];
-
-    // Create 20 sample files
-    for(let i=1; i<=20; i++) {
-        const sub = subjects[i % subjects.length];
-        const lvl = levels[i % levels.length];
-        papers.push({
-            id: i,
-            name: `${lvl} ${sub} Paper ${2020 + (i%6)}`,
-            subject: sub,
-            level: lvl,
-            downloads: (Math.random() * 2000 + 50).toFixed(0),
-            size: (Math.random() * 2.5 + 0.4).toFixed(1) + "MB"
-        });
-    }
+    // 1. YOUR REAL DATABASE
+    // Add your renamed file here.
+    const papers = [
+        {
+            id: 1,
+            name: "UACE Biology Paper 1",
+            subject: "Biology",
+            level: "S.6 UACE",
+            downloads: "1,240",
+            size: "0.5MB",
+            file: "pdfs/UACE_BIO_I.pdf", // Matches your new filename
+            preview: "previews/bio_preview.jpg"
+        },
+        // You can add more placeholder objects below this one later
+    ];
 
     const grid = document.getElementById('doc-grid');
     const loader = document.getElementById('search-loader');
 
+    // 2. RENDER ENGINE (Updated to use p.file)
     function render(data = papers) {
         grid.innerHTML = data.map(p => `
             <div class="paper-card" data-aos="fade-up">
                 <div class="preview-box">
-                    <img src="https://via.placeholder.com/300x400/27ae60/ffffff?text=${p.subject}" style="width:100%">
+                    <img src="${p.preview}" onerror="this.src='https://via.placeholder.com/300x400/27ae60/ffffff?text=${p.subject}'" style="width:100%">
                     <div class="download-badge">
                         <svg width="10" height="10" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                         ${p.downloads}
@@ -259,7 +258,7 @@
                     <span>${p.level} • ${p.subject}</span>
                     <span>${p.size}</span>
                 </div>
-                <a href="pdfs/sample.pdf" download class="download-btn">
+                <a href="${p.file}" download class="download-btn">
                     <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                     Download
                 </a>
@@ -267,12 +266,10 @@
         `).join('');
     }
 
-    // --- Search with 2s Delay ---
+    // 3. SEARCH LOGIC
     let searchTimeout;
     document.getElementById('paperSearch').oninput = (e) => {
         const term = e.target.value.toLowerCase();
-        
-        // Show loader immediately
         loader.style.display = "block";
         
         clearTimeout(searchTimeout);
@@ -283,10 +280,10 @@
             );
             render(filtered);
             loader.style.display = "none";
-        }, 2000); // 2 second delay
+        }, 2000);
     };
 
-    // --- Theme Toggle logic ---
+    // 4. THEME TOGGLE
     function toggleTheme() {
         const body = document.body;
         const icon = document.getElementById('theme-icon');
@@ -295,11 +292,10 @@
         
         body.setAttribute('data-theme', newTheme);
         
-        // Swap Icon
         if(newTheme === 'dark') {
             icon.innerHTML = '<path d="M12.1 22c-4.9 0-9-4.1-9-9s4.1-9 9-9c.9 0 1.7.1 2.5.4-.3.5-.5 1.1-.5 1.7 0 1.9 1.5 3.5 3.5 3.5.6 0 1.1-.2 1.7-.5.3.8.4 1.6.4 2.5 0 4.9-4.1 8.9-8.9 9.1z"/>';
         } else {
-            icon.innerHTML = '<path d="M12 7a5 5 0 110 10 5 5 0 010-10zM2 13h2a1 1 0 100-2H2a1 1 0 100 2zm18 0h2a1 1 0 100-2h-2a1 1 0 100 2zM11 2v2a1 1 0 102 0V2a1 1 0 10-2 0zm0 18v2a1 1 0 102 0v-2a1 1 0 10-2 0zM5.99 4.58a1 1 0 111.41 1.41L6.41 5.01a1 1 0 11-1.42-1.42zM18.36 16.95a1 1 0 111.41 1.41l-.99-.99a1 1 0 11-1.42-1.42zm-1.41-12.37a1 1 0 111.41 1.41l-.99-.99a1 1 0 11-1.42-1.42zM5.99 19.41a1 1 0 111.41-1.41l-.99-.99a1 1 0 11-1.42 1.42z"/>';
+            icon.innerHTML = '<path d="M12 7a5 5 0 110 10 5 5 0 010-10zM2 13h2a1 1 0 100-2H2a1 1 0 100 2zm18 0h2a1 1 0 100-2h-2a1 1 0 100 2zM11 2v2a1 1 0 102 0V2a1 1 0 10-2 0zm0 18v2a1 1 0 102 0v-2a1 1 0 10-2 0z"/>';
         }
 
         document.getElementById('nav-theme').setAttribute('content', newTheme === 'dark' ? '#0F172A' : '#F8FAF9');
@@ -312,6 +308,7 @@
         if(localStorage.getItem('theme') === 'dark') toggleTheme();
     };
 </script>
+
 
 </body>
 </html>
