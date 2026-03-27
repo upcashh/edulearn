@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" id="nav-theme" content="#F8FAF9">
+    <meta name="theme-color" id="nav-theme" content="#F8FAFC">
     <title>eduLEARN.ug | Uganda's Digital Library</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -11,51 +11,170 @@
     
     <style>
         :root {
-            --bg-color: #F8FAF9; --card-bg: #ffffff; --text-main: #1A1C1E;
-            --text-sub: #6C757D; --accent: #27ae60; --border-color: #E9ECEF;
-            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            /* Academic Prestige Palette */
+            --bg-color: #F8FAFC; 
+            --card-bg: #ffffff; 
+            --text-main: #1E293B; /* Charcoal */
+            --text-sub: #64748B;  /* Slate Grey */
+            --accent: #1B365D;    /* Deep Navy */
+            --success: #064E3B;   /* Forest Green */
+            --border-color: #E2E8F0;
+            --shadow: 0 10px 25px -5px rgba(27, 54, 93, 0.05);
+            --header-blur: rgba(248, 250, 252, 0.8);
         }
+
         [data-theme="dark"] {
-            --bg-color: #0F172A; --card-bg: #1E293B; --text-main: #F8FAFC;
-            --text-sub: #94A3B8; --accent: #4ADE80; --border-color: #334155;
+            --bg-color: #0F172A; 
+            --card-bg: #1E293B; 
+            --text-main: #F8FAFC; 
+            --text-sub: #94A3B8; 
+            --accent: #38B2AC; 
+            --success: #4ADE80; 
+            --border-color: #334155;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --header-blur: rgba(15, 23, 42, 0.8);
         }
-        * { box-sizing: border-box; transition: 0.3s; }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); }
-        header { padding: 40px 15px 20px; text-align: center; }
-        .logo-text { font-size: 28px; font-weight: 600; letter-spacing: -1px; }
-        .sub-tagline { font-size: 14px; color: var(--accent); margin-bottom: 30px; }
-        .search-container { max-width: 500px; margin: 0 auto 40px; width: 92%; position: relative; }
+
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--bg-color); 
+            margin: 0; padding: 0; color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Premium Floating Header */
+        header { 
+            padding: 40px 15px 30px; 
+            text-align: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            background: var(--header-blur);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-text { 
+            font-size: 32px; 
+            font-weight: 600; 
+            letter-spacing: -1.5px; 
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .sub-tagline { 
+            font-size: 14px; 
+            color: var(--success); 
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 25px; 
+            opacity: 0.9;
+        }
+
+        /* Sleek Search Container */
+        .search-container { max-width: 600px; margin: 0 auto; width: 92%; position: relative; }
         .search-container input {
-            width: 100%; padding: 16px 24px; border-radius: 20px; border: 2px solid var(--border-color);
-            background: var(--card-bg); color: var(--text-main); font-size: 16px; outline: none; box-shadow: var(--shadow);
+            width: 100%; padding: 18px 28px; border-radius: 18px; 
+            border: 2px solid var(--border-color);
+            background: var(--card-bg); color: var(--text-main); 
+            font-size: 16px; outline: none; 
+            box-shadow: var(--shadow);
+            font-family: 'Outfit';
         }
+
+        .search-container input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(27, 54, 93, 0.1);
+        }
+
         #search-loader {
             display: none; position: absolute; right: 20px; top: 18px;
-            width: 20px; height: 20px; border: 3px solid #eee; border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;
+            width: 22px; height: 22px; border: 3px solid #eee; 
+            border-top: 3px solid var(--accent); border-radius: 50%; 
+            animation: spin 0.8s linear infinite;
         }
+
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        .content { max-width: 1100px; margin: 0 auto; padding: 0 15px 100px; }
-        #doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
-        .paper-card {
-            background: var(--card-bg); border-radius: 20px; padding: 12px;
-            text-decoration: none; color: inherit; border: 1px solid var(--border-color);
-            display: flex; flex-direction: column; box-shadow: var(--shadow);
+
+        /* Main Content Grid */
+        .content { max-width: 1200px; margin: 40px auto; padding: 0 20px 100px; }
+        #doc-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 25px; 
         }
-        .paper-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .preview-box { width: 100%; aspect-ratio: 3/4; background: #f0f0f0; border-radius: 15px; overflow: hidden; margin-bottom: 12px; }
-        .title { font-size: 14px; font-weight: 600; line-height: 1.3; height: 36px; overflow: hidden; margin-bottom: 5px; }
-        .meta { font-size: 11px; color: var(--text-sub); }
-        .theme-toggle { position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px; border-radius: 15px; background: var(--accent); border: none; cursor: pointer; z-index: 1000; color: white; display: flex; align-items: center; justify-content: center; }
-        @media (max-width: 480px) { #doc-grid { grid-template-columns: 1fr 1fr; gap: 12px; } }
+
+        .paper-card {
+            background: var(--card-bg); border-radius: 24px; padding: 15px;
+            text-decoration: none; color: inherit; 
+            border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; 
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .paper-card:hover { 
+            transform: translateY(-8px); 
+            border-color: var(--accent);
+            box-shadow: 0 20px 25px -5px rgba(27, 54, 93, 0.1);
+        }
+
+        .preview-box { 
+            width: 100%; aspect-ratio: 3/4; 
+            background: #F1F5F9; border-radius: 18px; 
+            overflow: hidden; margin-bottom: 15px; 
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .title { 
+            font-size: 16px; font-weight: 600; line-height: 1.3; 
+            height: 42px; overflow: hidden; margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .meta-line { 
+            font-size: 12px; color: var(--text-sub); 
+            display: flex; justify-content: space-between;
+            font-weight: 400;
+        }
+
+        .badge {
+            background: rgba(6, 78, 59, 0.1);
+            color: var(--success);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Floating Theme Toggle */
+        .theme-toggle { 
+            position: fixed; bottom: 30px; right: 30px; 
+            width: 55px; height: 55px; border-radius: 18px; 
+            background: var(--accent); border: none; cursor: pointer; 
+            z-index: 1000; color: white; display: flex; 
+            align-items: center; justify-content: center;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+            font-size: 20px;
+        }
+
+        @media (max-width: 480px) { 
+            #doc-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .logo-text { font-size: 26px; }
+            .content { padding: 0 12px 100px; }
+        }
     </style>
 </head>
 <body>
 
-<button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">🌓</button>
 
 <header>
     <div class="logo-text">eduLEARN.ug</div>
-    <div class="sub-tagline">Uganda's Premier Digital Library</div>
+    <div class="sub-tagline">Uganda's Digital Library</div>
     <div class="search-container">
         <input type="text" id="paperSearch" placeholder="Search Biology, P.7, Mathematics...">
         <div id="search-loader"></div>
@@ -68,7 +187,6 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    // THE DATABASE - Only your real files go here
     const papers = [
         { 
             id: 1, 
@@ -87,22 +205,38 @@
         grid.innerHTML = data.map(p => `
             <a href="preview.html?id=${p.id}" class="paper-card" data-aos="fade-up">
                 <div class="preview-box">
-                    <img src="${p.preview}" onerror="this.src='https://via.placeholder.com/300x400/27ae60/ffffff?text=${p.subject}'" style="width:100%">
+                    <img src="${p.preview}" onerror="this.src='https://via.placeholder.com/300x400/1B365D/ffffff?text=${p.subject}'" style="width:100%; height:100%; object-fit: cover;">
                 </div>
                 <div class="title">${p.name}</div>
-                <div class="meta-line"><span>${p.level}</span></div>
+                <div class="meta-line">
+                    <span class="badge">${p.level}</span>
+                    <span>${p.size}</span>
+                </div>
             </a>
         `).join('');
     }
 
-    // Standard Search Logic
     document.getElementById('paperSearch').oninput = (e) => {
         const term = e.target.value.toLowerCase();
-        const filtered = papers.filter(p => p.name.toLowerCase().includes(term));
-        render(filtered);
+        const loader = document.getElementById('search-loader');
+        loader.style.display = "block";
+        
+        setTimeout(() => {
+            const filtered = papers.filter(p => p.name.toLowerCase().includes(term) || p.subject.toLowerCase().includes(term));
+            render(filtered);
+            loader.style.display = "none";
+        }, 500); // Smoother search feel
     };
 
-    window.onload = () => { render(); AOS.init(); };
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        const newTheme = current === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', newTheme);
+        document.getElementById('nav-theme').setAttribute('content', newTheme === 'dark' ? '#0F172A' : '#F8FAFC');
+    }
+
+    window.onload = () => { render(); AOS.init({ duration: 800, once: true }); };
 </script>
 
 </body>
