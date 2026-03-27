@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | eduLEARN.ug</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit'; background: #F1F5F9; padding: 20px; display: flex; justify-content: center; }
+        .admin-card { background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 500px; }
+        h1 { font-size: 22px; margin-bottom: 20px; color: #1E293B; }
+        label { display: block; margin-top: 15px; font-size: 14px; font-weight: 600; color: #64748B; }
+        input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 12px; border: 1px solid #E2E8F0; box-sizing: border-box; font-family: 'Outfit'; }
+        .btn-upload { background: #4F46E5; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: 600; margin-top: 25px; cursor: pointer; }
+        .btn-upload:disabled { background: #94A3B8; }
+        #status { margin-top: 15px; font-size: 13px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="admin-card">
+    <h1>📤 Upload New Paper</h1>
+    
+    <label>Paper Name</label>
+    <input type="text" id="docName" placeholder="e.g. UACE Biology P1 2025">
+
+    <label>Subject</label>
+    <select id="docSubject">
+        <option value="Biology">Biology</option>
+        <option value="Mathematics">Mathematics</option>
+        <option value="Physics">Physics</option>
+        <option value="Chemistry">Chemistry</option>
+        <option value="English">English</option>
+    </select>
+
+    <label>Level</label>
+    <select id="docLevel">
+        <option value="S.6 UACE">S.6 UACE</option>
+        <option value="S.4 UCE">S.4 UCE</option>
+        <option value="P.7 PLE">P.7 PLE</option>
+    </select>
+
+    <label>Select PDF File</label>
+    <input type="file" id="docFile" accept=".pdf">
+
+    <button class="btn-upload" id="uploadBtn" onclick="handleUpload()">Upload to eduLEARN</button>
+    
+    <div id="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // 1. YOUR CREDENTIALS (Get these from Supabase Project Settings > API)
+    const SUPABASE_URL = 'https://likqwrfnubvkxgyjqhut.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_JYgameVyM3Tt4ncbJlxcSQ_cfmErrdl';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function handleUpload() {
+        const name = document.getElementById('docName').value;
+        const subject = document.getElementById('docSubject').value;
+        const level = document.getElementById('docLevel').value;
+        const fileInput = document.getElementById('docFile');
+        const status = document.getElementById('status');
+        const btn = document.getElementById('uploadBtn');
+
+        if (!fileInput.files.length || !name) {
+            alert("Please fill all fields and select a file.");
+            return;
+        }
+
+        btn.disabled = true;
+        status.innerText = "⏳ Uploading PDF to Storage...";
+        status.style.color = "blue";
+
+        const file = fileInput.files[0];
+        const fileName = `${Date.now()}_${file.name}`; // Unique name to prevent overwriting
+
+        // 2. UPLOAD TO STORAGE
+        const { data: storageData, error: storageError } = await _supabase.storage
+            .from('pdfs')
+            .upload(fileName, file);
+
+        if (storageError) {
+            status.innerText = "❌ Storage Error: " + storageError.message;
+            btn.disabled = false;
+            return;
+        }
+
+        // 3. GET PUBLIC URL
+        const { data: urlData } = _supabase.storage.from('pdfs').getPublicUrl(fileName);
+        const publicUrl = urlData.publicUrl;
+
+        status.innerText = "✅ PDF Saved. Updating Database...";
+
+        // 4. SAVE TO DATABASE TABLE
+        const { error: dbError } = await _supabase
+            .from('papers')
+            .insert([{ 
+                name: name, 
+                subject: subject, 
+                level: level, 
+                file_url: publicUrl 
+            }]);
+
+        if (dbError) {
+            status.innerText = "❌ Database Error: " + dbError.message;
+        } else {
+            status.innerText = "🎉 Success! Paper is now live on eduLEARN.ug";
+            status.style.color = "green";
+            // Clear fields
+            document.getElementById('docName').value = "";
+            fileInput.value = "";
+        }
+        btn.disabled = false;
+    }
+</script>
+
+</body>
+</html>
+
