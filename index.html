@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>eduLEARN.ug | Home</title>
+    <title>eduLEARN.ug | Uganda's Digital Library</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,137 +13,211 @@
             --text: #0F172A;
             --sub-text: #64748B;
             --nav-bg: rgba(255, 255, 255, 0.9);
+            --border: #E2E8F0;
         }
 
         body { 
             font-family: 'Outfit', sans-serif; 
             background: var(--bg); 
             margin: 0; color: var(--text);
-            padding-bottom: 80px; /* Space for bottom nav */
+            padding-bottom: 90px;
+            overflow-x: hidden;
         }
 
-        /* Top Header */
+        /* Side Menu Styles */
+        #side-menu {
+            position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
+            background: var(--card); z-index: 2000; transition: 0.3s;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1); padding: 30px 20px;
+        }
+        #side-menu.open { left: 0; }
+        .menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); z-index: 1999; display: none;
+        }
+        .menu-item {
+            display: flex; align-items: center; gap: 15px; padding: 15px;
+            text-decoration: none; color: var(--text); font-weight: 400;
+            border-radius: 12px; margin-bottom: 5px;
+        }
+        .menu-item:hover { background: var(--bg); }
+
+        /* Header */
         header {
-            padding: 20px;
-            background: var(--card);
-            border-bottom: 1px solid #E2E8F0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 15px 20px; background: var(--nav-bg); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border); display: flex;
+            justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
         }
+        .menu-trigger { cursor: pointer; color: var(--text); }
 
-        .user-profile {
-            width: 35px; height: 35px;
-            background: #E2E8F0;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        /* Hero Section */
+        /* Hero & Search */
         .hero { padding: 25px 20px; }
-        .hero h1 { font-size: 24px; margin: 0 0 10px; }
-        .hero p { color: var(--sub-text); margin: 0; font-size: 15px; }
-
+        .hero h1 { font-size: 26px; margin: 0 0 8px; letter-spacing: -0.5px; }
         .search-bar {
-            background: var(--card);
-            margin-top: 20px;
-            padding: 12px 20px;
-            border-radius: 100px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            border: 1px solid #E2E8F0;
+            background: var(--card); margin-top: 20px; padding: 14px 20px;
+            border-radius: 16px; display: flex; align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid var(--border);
         }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 16px; margin-left: 12px; font-family: 'Outfit'; }
 
-        .search-bar input {
-            border: none; outline: none; width: 100%; font-size: 16px; margin-left: 10px;
-        }
+        /* Stats Section */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px 25px; }
+        .stat-card { background: var(--card); padding: 15px; border-radius: 18px; border: 1px solid var(--border); }
+        .stat-num { font-size: 18px; font-weight: 600; color: var(--primary); }
+        .stat-label { font-size: 12px; color: var(--sub-text); }
 
-        /* Categories/Horizontal Scroll */
-        .section-title { padding: 0 20px; font-weight: 600; display: flex; justify-content: space-between; }
-        .horizontal-scroll {
-            display: flex; overflow-x: auto; padding: 15px 20px; gap: 15px;
-            scrollbar-width: none;
-        }
+        /* Horizontal Lists */
+        .section-header { padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .section-header h2 { font-size: 18px; font-weight: 600; }
+        .horizontal-scroll { display: flex; overflow-x: auto; padding: 10px 20px 25px; gap: 15px; scrollbar-width: none; }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
 
-        .feature-card {
-            min-width: 200px; background: var(--primary); color: white;
-            padding: 20px; border-radius: 20px; position: relative;
+        .doc-card {
+            min-width: 160px; background: var(--card); padding: 12px;
+            border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
+        .doc-thumb { width: 100%; aspect-ratio: 1/1; background: #EEF2FF; border-radius: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+        .doc-title { font-size: 14px; font-weight: 600; line-height: 1.2; height: 34px; overflow: hidden; }
 
-        /* Bottom Toolbar */
+        /* Subjects Grid */
+        .subjects-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 0 20px 30px; }
+        .subject-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; }
+        .subject-icon { width: 50px; height: 50px; background: var(--card); border-radius: 15px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--primary); }
+
+        /* Bottom Nav */
         .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 70px;
-            background: var(--nav-bg); backdrop-filter: blur(10px);
-            border-top: 1px solid #E2E8F0;
-            display: flex; justify-content: space-around; align-items: center;
-            z-index: 1000;
+            position: fixed; bottom: 0; width: 100%; height: 75px;
+            background: var(--nav-bg); backdrop-filter: blur(15px);
+            border-top: 1px solid var(--border); display: flex;
+            justify-content: space-around; align-items: center; z-index: 1000;
         }
-
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            text-decoration: none; color: var(--sub-text); font-size: 11px;
-            gap: 4px;
-        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--sub-text); font-size: 11px; gap: 5px; }
         .nav-item.active { color: var(--primary); font-weight: 600; }
-        
-        .nav-icon { width: 24px; height: 24px; }
+        .nav-item svg { width: 24px; height: 24px; stroke-width: 2; }
     </style>
 </head>
 <body>
 
+<div class="menu-overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<div id="side-menu">
+    <div style="font-weight: 700; font-size: 22px; margin-bottom: 30px;">Menu</div>
+    <a href="#" class="menu-item">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path></svg>
+        My Account
+    </a>
+    <a href="#" class="menu-item">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v2m0 16v2m10-10h-2M4 10H2m15.364-6.364l-1.414 1.414M7.05 16.95l-1.414 1.414M16.95 16.95l1.414 1.414M5.636 5.636l1.414 1.414"></path></svg>
+        Dark Mode
+    </a>
+    <a href="#" class="menu-item">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        Saved Papers
+    </a>
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+    <a href="#" class="menu-item" style="color: #EF4444;">Log Out</a>
+</div>
+
 <header>
-    <div style="font-weight: 700; font-size: 20px;">eduLEARN<span style="color:var(--primary)">.ug</span></div>
-    <div class="user-profile">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    <div class="menu-trigger" onclick="toggleMenu()">
+        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7"></path></svg>
     </div>
-</header>
+    <div style="font-weight: 700; font-size: 20px; letter-spacing: -1px;">eduLEARN<span style="color:var(--primary)">.ug</span></div>
+    <div style="width: 28px;"></div> </header>
 
 <div class="hero">
-    <h1>Transform the way you study</h1>
-    <p>Unlock exclusive materials and stay ahead.</p>
+    <h1>Hello, Scholar! 👋</h1>
+    <p>Ready to supercharge your studies today?</p>
     
     <div class="search-bar">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
-        <input type="text" placeholder="Search for courses, papers...">
+        <svg width="20" height="20" fill="none" stroke="var(--sub-text)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        <input type="text" placeholder="Search Biology, UNEB, Mocks...">
     </div>
 </div>
 
-<div class="section-title">
-    <span>Continue Reading</span>
-    <span style="color:var(--primary); font-size: 14px;">See all</span>
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-num">1.2k+</div>
+        <div class="stat-label">Past Papers</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-num">450+</div>
+        <div class="stat-label">Top Schools</div>
+    </div>
+</div>
+
+<div class="section-header">
+    <h2>Continue Reading</h2>
+    <span style="color:var(--primary); font-size: 14px; font-weight: 600;">View All</span>
 </div>
 
 <div class="horizontal-scroll">
-    <div class="feature-card">
-        <div style="font-size: 13px; opacity: 0.8;">S.6 Biology</div>
-        <div style="font-size: 18px; font-weight: 600; margin-top: 10px;">UACE Mocks 2025</div>
+    <div class="doc-card">
+        <div class="doc-thumb">
+            <svg width="30" height="30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        </div>
+        <div class="doc-title">UACE Biology Paper 1 2025</div>
+        <div style="font-size: 11px; color: var(--sub-text); margin-top: 5px;">King's College Budo</div>
     </div>
-    <div class="feature-card" style="background: #10B981;">
-        <div style="font-size: 13px; opacity: 0.8;">P.7 PLE</div>
-        <div style="font-size: 18px; font-weight: 600; margin-top: 10px;">Mathematics 2024</div>
+    <div class="doc-card">
+        <div class="doc-thumb" style="color: #10B981; background: #ECFDF5;">
+            <svg width="30" height="30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        </div>
+        <div class="doc-title">UCE Math Paper 2 Mock</div>
+        <div style="font-size: 11px; color: var(--sub-text); margin-top: 5px;">St. Mary's Kitende</div>
+    </div>
+</div>
+
+<div class="section-header">
+    <h2>Quick Subjects</h2>
+</div>
+<div class="subjects-grid">
+    <div class="subject-item">
+        <div class="subject-icon">Bio</div>
+        <span>Biology</span>
+    </div>
+    <div class="subject-item">
+        <div class="subject-icon">Mat</div>
+        <span>Math</span>
+    </div>
+    <div class="subject-item">
+        <div class="subject-icon">Phy</div>
+        <span>Physics</span>
+    </div>
+    <div class="subject-item">
+        <div class="subject-icon">Eng</div>
+        <span>English</span>
     </div>
 </div>
 
 <nav class="bottom-nav">
     <a href="#" class="nav-item active">
-        <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
         <span>Home</span>
     </a>
     <a href="#" class="nav-item">
-        <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-        <span>My Library</span>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        <span>Library</span>
     </a>
     <a href="#" class="nav-item">
-        <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
-        <span>Discovery</span>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <span>Discover</span>
     </a>
     <a href="#" class="nav-item">
-        <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
         <span>AI Tutor</span>
     </a>
 </nav>
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('side-menu');
+        const overlay = document.getElementById('overlay');
+        menu.classList.toggle('open');
+        overlay.style.display = menu.classList.contains('open') ? 'block' : 'none';
+    }
+</script>
 
 </body>
 </html>
